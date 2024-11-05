@@ -7,11 +7,17 @@ import HomeScreen from '../screens/HomeScreen';
 import SearchRideScreen from '../screens/SearchRideScreen';
 import ProposeRideScreen from '../screens/ProposeRideScreen';
 import DashboardScreen from '../screens/DashboardScreen';
+import RidesListScreen from '../screens/RidesListScreen';
+import RideDetailsScreen from '../screens/RideDetailsScreen';
+import GlobalOverviewScreen from '../screens/GlobalOverviewScreen';
+import CitizenEconomyScreen from '../screens/CitizenEconomyScreen';
+import CompanyEconomyScreen from '../screens/CompanyEconomyScreen';
+import CityEconomyScreen from '../screens/CityEconomyScreen';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
-// Fonction pour la pile Home
+// Fonction pour la pile Accueil
 function HomeStack() {
   return (
     <Stack.Navigator>
@@ -47,7 +53,29 @@ function DashboardStack() {
   );
 }
 
-// Navigation par onglets principale
+// Fonction pour la pile Global avec des pages pour les économies citoyen, entreprise, et ville
+function GlobalStack() {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen name="Vue Globale" component={GlobalOverviewScreen} options={{ headerShown: false }} />
+      <Stack.Screen name="Économie Citoyen" component={CitizenEconomyScreen} />
+      <Stack.Screen name="Économie Entreprise" component={CompanyEconomyScreen} />
+      <Stack.Screen name="Économie Ville" component={CityEconomyScreen} />
+    </Stack.Navigator>
+  );
+}
+
+// Fonction pour la pile Liste des trajets
+function RidesListStack() {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen name="Liste de vos trajets" component={RidesListScreen} options={{ headerShown: false }} />
+      <Stack.Screen name="Détails du trajet" component={RideDetailsScreen} />
+    </Stack.Navigator>
+  );
+}
+
+// Navigation principale par onglets
 export default function MainNavigator() {
   return (
     <Tab.Navigator
@@ -61,6 +89,8 @@ export default function MainNavigator() {
       <Tab.Screen name="Recherche trajet" component={SearchRideStack} />
       <Tab.Screen name="Proposer un trajet" component={ProposeRideStack} />
       <Tab.Screen name="Dashboard" component={DashboardStack} />
+      <Tab.Screen name="Global" component={GlobalStack} />
+      <Tab.Screen name="Liste de vos trajets" component={RidesListStack} />
     </Tab.Navigator>
   );
 }

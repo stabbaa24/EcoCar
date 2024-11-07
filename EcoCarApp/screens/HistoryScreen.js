@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text } from 'react-native';
 
-const HomeScreen = () => {
+const HistoryScreen = () => {
  
 };
 
-export default HomeScreen;
+export default HistoryScreen;

@@ -1,3 +1,4 @@
+// MainNavigator.js
 import React from 'react';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -5,21 +6,22 @@ import { createStackNavigator } from '@react-navigation/stack';
 import HomeScreen from '../screens/HomeScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import HistoryScreen from '../screens/HistoryScreen';
+import TripDetailsScreen from '../screens/TripDetailsScreen'; // Ajout de TripDetailsScreen
 import DashboardUserScreen from '../screens/DashboardUserScreen';
 import DashboardCityScreen from '../screens/DashboardCityScreen';
 import DashboardCompanyScreen from '../screens/DashboardCompanyScreen';
-import LoginScreen from '../screens/LoginScreen';
-import Icon from 'react-native-vector-icons/Ionicons'; // Assure d'installer react-native-vector-icons pour les icônes
+import Icon from 'react-native-vector-icons/Ionicons';
 
 const Drawer = createDrawerNavigator();
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
+// Les onglets de navigation (bas de l'écran)
 function TabNavigator() {
   return (
-    <Tab.Navigator initialRouteName="Home">
+    <Tab.Navigator initialRouteName="HomeTab">
       <Tab.Screen
-        name="Home"
+        name="Accueil"
         component={HomeScreen}
         options={{
           tabBarLabel: 'Accueil',
@@ -29,8 +31,8 @@ function TabNavigator() {
         }}
       />
       <Tab.Screen
-        name="History"
-        component={HistoryScreen}
+        name="Historique des trajets"
+        component={HistoryStackNavigator} // Utilisation de la pile HistoryStackNavigator
         options={{
           tabBarLabel: 'Trajets',
           tabBarIcon: ({ color, size }) => (
@@ -39,7 +41,7 @@ function TabNavigator() {
         }}
       />
       <Tab.Screen
-        name="Profile"
+        name="Profil utilisateur"
         component={ProfileScreen}
         options={{
           tabBarLabel: 'Profil',
@@ -52,14 +54,41 @@ function TabNavigator() {
   );
 }
 
-function MainNavigator() {
+// Pile pour HistoryScreen incluant TripDetailsScreen
+function HistoryStackNavigator() {
   return (
-    <Drawer.Navigator initialRouteName="Tabs">
-      <Drawer.Screen name="Tabs" component={TabNavigator} options={{ title: 'EcoCar' }} />
+    <Stack.Navigator>
+      <Stack.Screen
+        name="History"
+        component={HistoryScreen}
+        options={{ headerShown: false }} // Désactive l'en-tête pour l'écran History
+      />
+      <Stack.Screen 
+        name="TripDetails" 
+        component={TripDetailsScreen} 
+        options={{ title: ' ' }} />
+    </Stack.Navigator>
+  );
+}
+
+// Les pages du Drawer avec TabNavigator comme contenu principal
+function DrawerNavigator() {
+  return (
+    <Drawer.Navigator initialRouteName="HomeDrawer">
+      <Drawer.Screen name="HomeDrawer" component={TabNavigator} options={{ title: 'EcoCar' }} />
       <Drawer.Screen name="DashboardUser" component={DashboardUserScreen} options={{ title: 'Dashboard Utilisateur' }} />
       <Drawer.Screen name="DashboardCity" component={DashboardCityScreen} options={{ title: 'Dashboard ProgVille' }} />
       <Drawer.Screen name="DashboardCompany" component={DashboardCompanyScreen} options={{ title: 'Dashboard Entreprise' }} />
     </Drawer.Navigator>
+  );
+}
+
+// Stack principal pour gérer la transition entre Login et Drawer
+function MainNavigator() {
+  return (
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="Drawer" component={DrawerNavigator} />
+    </Stack.Navigator>
   );
 }
 

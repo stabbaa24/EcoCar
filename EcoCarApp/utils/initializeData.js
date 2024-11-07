@@ -1,10 +1,13 @@
 // initializeData.js
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { users, trips, co2Statistics } from './sampleData';
+import { clearUserSession } from './storage';
 
 export const initializeData = async () => {
   try {
-    // Vérifiez si les données existent déjà
+    // Effacez la session utilisateur enregistrée (pour les tests seulement)
+    await clearUserSession();
+
     const existingUsers = await AsyncStorage.getItem('users');
     if (!existingUsers) {
       await AsyncStorage.setItem('users', JSON.stringify(users));

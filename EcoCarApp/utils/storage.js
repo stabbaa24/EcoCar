@@ -1,30 +1,28 @@
+// storage.js
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-// Fonction pour sauvegarder des données
-export const saveData = async (key, value) => {
+export const saveUserSession = async (user) => {
   try {
-    await AsyncStorage.setItem(key, JSON.stringify(value));
+    await AsyncStorage.setItem('userSession', JSON.stringify(user));
   } catch (error) {
-    console.error('Erreur lors de la sauvegarde des données', error);
+    console.error('Erreur lors de la sauvegarde de la session utilisateur', error);
   }
 };
 
-// Fonction pour récupérer des données
-export const getData = async (key) => {
+export const getUserSession = async () => {
   try {
-    const value = await AsyncStorage.getItem(key);
-    return value ? JSON.parse(value) : null;
+    const user = await AsyncStorage.getItem('userSession');
+    return user ? JSON.parse(user) : null;
   } catch (error) {
-    console.error('Erreur lors de la récupération des données', error);
+    console.error('Erreur lors de la récupération de la session utilisateur', error);
     return null;
   }
 };
 
-// Fonction pour supprimer des données
-export const removeData = async (key) => {
+export const clearUserSession = async () => {
   try {
-    await AsyncStorage.removeItem(key);
+    await AsyncStorage.removeItem('userSession');
   } catch (error) {
-    console.error('Erreur lors de la suppression des données', error);
+    console.error('Erreur lors de la suppression de la session utilisateur', error);
   }
 };

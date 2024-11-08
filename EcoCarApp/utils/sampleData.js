@@ -127,3 +127,39 @@ export const rseData = {
     .reduce((acc, trip) => acc + (trip.electricityConsumed || 0) * environmentalConstants.averageElectricityCost2023, 0)
     .toFixed(2), // € économisés en électricité
 };
+
+// Fonction pour calculer les données RSE par utilisateur
+// sampleData.js
+
+export const getUserRseData = (userId) => {
+  const userTrips = trips.filter((trip) => trip.userId === userId);
+  
+  const totalCo2Saved = userTrips.reduce((total, trip) => total + (trip.co2Saved || 0), 0);
+  const totalFuelConsumed = userTrips.reduce((total, trip) => total + (trip.fuelConsumed || 0), 0);
+  const totalElectricityConsumed = userTrips.reduce((total, trip) => total + (trip.electricityConsumed || 0), 0);
+
+  const tripsAsDriver = userTrips.filter((trip) => trip.role === 'conducteur').length;
+  const tripsAsPassenger = userTrips.filter((trip) => trip.role === 'passager').length;
+  const totalTrips = userTrips.length;
+
+  // Classement basé sur les économies de CO2
+  const sortedUsersByCo2 = users.map((user) => ({
+    id: user.id,
+    co2Saved: trips
+      .filter((trip) => trip.userId === user.id)
+      .reduce((total, trip) => total + (trip.co2Saved || 0), 0),
+  })).sort((a, b) => b.co2Saved - a.co2Saved);
+  const userRanking = sortedUsersByCo2.findIndex((user) => user.id === userId) + 1;
+
+  return {
+    totalTrips,
+    tripsAsDriver,
+    tripsAsPassenger,
+    cityEmissionsReduction: (totalCo2Saved * environmentalConstants.urbanHeatImpactReductionFactor).toFixed(2),
+    energyCostSavings: (totalFuelConsumed * environmentalConstants.averageFuelCost2023).toFixed(2),
+    totalEnergySavings: (totalElectricityConsumed * environmentalConstants.averageElectricityCost2023).toFixed(2),
+    co2Saved: totalCo2Saved.toFixed(2),
+    userRanking,
+    treesSaved: (totalCo2Saved / 21).toFixed(2), // Equivalent arbres sauvés
+  };
+};

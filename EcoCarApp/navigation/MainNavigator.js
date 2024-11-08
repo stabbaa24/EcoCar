@@ -6,7 +6,8 @@ import { createStackNavigator } from '@react-navigation/stack';
 import HomeScreen from '../screens/HomeScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import HistoryScreen from '../screens/HistoryScreen';
-import TripDetailsScreen from '../screens/TripDetailsScreen'; // Ajout de TripDetailsScreen
+import TripDetailsScreen from '../screens/TripDetailsScreen';
+import DashboardScreen from '../screens/DashboardScreen'; // Import de la page Dashboard
 import DashboardUserScreen from '../screens/DashboardUserScreen';
 import DashboardCityScreen from '../screens/DashboardCityScreen';
 import DashboardCompanyScreen from '../screens/DashboardCompanyScreen';
@@ -41,6 +42,16 @@ function TabNavigator() {
         }}
       />
       <Tab.Screen
+        name="Dashboard"
+        component={DashboardScreen} // Ajout de l'onglet Dashboard
+        options={{
+          tabBarLabel: 'Dashboard',
+          tabBarIcon: ({ color, size }) => (
+            <Icon name="stats-chart-outline" color={color} size={size} />
+          ),
+        }}
+      />
+      <Tab.Screen
         name="Profil utilisateur"
         component={ProfileScreen}
         options={{
@@ -61,12 +72,13 @@ function HistoryStackNavigator() {
       <Stack.Screen
         name="History"
         component={HistoryScreen}
-        options={{ headerShown: false }} // Désactive l'en-tête pour l'écran History
+        options={{ headerShown: false }}
       />
       <Stack.Screen 
         name="TripDetails" 
         component={TripDetailsScreen} 
-        options={{ title: ' ' }} />
+        options={{ title: ' ' }} 
+      />
     </Stack.Navigator>
   );
 }
